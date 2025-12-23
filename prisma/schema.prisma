@@ -13,17 +13,21 @@ datasource db {
   provider = "postgresql"
 }
 
-model Items {
+model Item {
   id          Int       @id @default(autoincrement())
   createdAt   DateTime  @default(now())
   name        String    @unique
   description String
-  classId     Int
-  class       ItemClass @relation(fields: [classId], references: [id])
+  categoryId  Int
+  category    ItemCategory @relation(fields: [categoryId], references: [id])
+
+  @@map("items")
 }
 
-model ItemClass {
+model ItemCategory {
   id    Int     @id @default(autoincrement())
   name  String  @unique
-  items Items[]
+  items Item[]
+
+  @@map("item_categories")
 }

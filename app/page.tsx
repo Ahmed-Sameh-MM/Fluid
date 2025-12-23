@@ -10,21 +10,21 @@ import {
 } from "@/components/select"
 
 import { addItem } from "./db/actions";
-import { ItemClass, ItemClassSchema } from "./model_classes/item_class";
+import { ItemCategory, ItemCategorySchema } from "./model_classes/item_category";
 
 import { Plus } from "lucide-react";
 
 export default async function Home() {
 
-  async function getItemClasses(): Promise<ItemClass[]> {
-    const response = await fetch("http://localhost:3000/api/get-item-classes");
+  async function getItemCategories(): Promise<ItemCategory[]> {
+    const response = await fetch("http://localhost:3000/api/get-item-categories");
 
-    const itemClasses = await response.json();
+    const itemCategories = await response.json();
 
-    return ItemClassSchema.array().parse(itemClasses);
+    return ItemCategorySchema.array().parse(itemCategories);
   }
 
-  const itemClasses = await getItemClasses();
+  const itemCategories = await getItemCategories();
 
   return (
     <main>
@@ -54,14 +54,14 @@ export default async function Home() {
 
         <br />
 
-        <Label>Select or Create a Class!</Label>
+        <Label>Select or Create a Cateogry!</Label>
 
-        <Select name="class">
+        <Select name="category">
           <SelectTrigger className="w-[180px]">
-            <SelectValue placeholder="Class" />
+            <SelectValue placeholder="Category" />
           </SelectTrigger>
           <SelectContent>
-            {itemClasses.map(cls => (
+            {itemCategories.map(cls => (
               <SelectItem value={String(cls.id)}>{cls.name}</SelectItem>
             ))}
           </SelectContent>
