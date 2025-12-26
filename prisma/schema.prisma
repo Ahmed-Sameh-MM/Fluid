@@ -14,9 +14,9 @@ datasource db {
 }
 
 model Item {
-  id          Int       @id @default(autoincrement())
-  createdAt   DateTime  @default(now())
-  name        String    @unique
+  id          Int          @id @default(autoincrement())
+  createdAt   DateTime     @default(now())
+  name        String       @unique
   description String?
   categoryId  Int
   category    ItemCategory @relation(fields: [categoryId], references: [id])
@@ -25,8 +25,8 @@ model Item {
 }
 
 model ItemCategory {
-  id    Int     @id @default(autoincrement())
-  name  String  @unique
+  id    Int    @id @default(autoincrement())
+  name  String @unique
   items Item[]
 
   @@map("item_categories")

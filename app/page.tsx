@@ -11,9 +11,18 @@ import {
 import { AddCategoryDialog } from "@/components/features/categories/add_category_dialog";
 
 import { addItem } from "./db/actions";
+import { Item, ItemSchema } from "./model_classes/item";
 import { ItemCategory, ItemCategorySchema } from "./model_classes/item_category";
 
 export default async function Home() {
+
+  async function getItems(): Promise<Item[]> {
+    const response = await fetch("http://localhost:3000/api/get-items");
+
+    const items = await response.json();
+
+    return ItemSchema.array().parse(items);
+  }
 
   async function getItemCategories(): Promise<ItemCategory[]> {
     const response = await fetch("http://localhost:3000/api/get-item-categories");
@@ -23,6 +32,8 @@ export default async function Home() {
     return ItemCategorySchema.array().parse(itemCategories);
   }
 
+  const items = await getItems();
+
   const itemCategories = await getItemCategories();
 
   return (
@@ -30,6 +41,18 @@ export default async function Home() {
       <h1>Fluid</h1>
 
       <br />
+
+      <h1>Items</h1>
+
+      <br />
+
+      {items.map(cls => (
+        <div>
+          <Label key={cls.id}>Name: ({cls.name}), Description: ({cls.description}), Category: ({cls.categoryId})</Label>
+          <br />
+        </div>
+      ))}
+
       <br />
 
       <form action={addItem}>
@@ -46,7 +69,7 @@ export default async function Home() {
 
         <LabeledInput
           name="description"
-          label="Item Description"
+          label="Item Description (Optional)"
           id="item_description_input"
           type="text"
           placeholder="Enter Description Here!"
@@ -54,7 +77,7 @@ export default async function Home() {
 
         <br />
 
-        <Label>Select or Create a Cateogry!</Label>
+        <Label>Select or Create a Category!</Label>
 
         <Select name="category">
           <SelectTrigger className="w-[180px]">
