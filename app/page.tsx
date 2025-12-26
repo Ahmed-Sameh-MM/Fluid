@@ -1,28 +1,20 @@
-import { Button } from "@/components/ui/button"
-import { Label } from "@/components/ui/label"
-import { LabeledInput } from "@/components/labeled_input"
+import { Button } from "@/components/ui/button";
+import { Label } from "@/components/ui/label";
+import { LabeledInput } from "@/components/labeled_input";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select"
+} from "@/components/ui/select";
 import { AddCategoryDialog } from "@/components/features/categories/add_category_dialog";
+import ItemList from "@/components/features/items/item_list";
 
 import { addItem } from "./db/actions";
-import { Item, ItemSchema } from "./model_classes/item";
 import { ItemCategory, ItemCategorySchema } from "./model_classes/item_category";
 
 export default async function Home() {
-
-  async function getItems(): Promise<Item[]> {
-    const response = await fetch("http://localhost:3000/api/get-items");
-
-    const items = await response.json();
-
-    return ItemSchema.array().parse(items);
-  }
 
   async function getItemCategories(): Promise<ItemCategory[]> {
     const response = await fetch("http://localhost:3000/api/get-item-categories");
@@ -31,8 +23,6 @@ export default async function Home() {
 
     return ItemCategorySchema.array().parse(itemCategories);
   }
-
-  const items = await getItems();
 
   const itemCategories = await getItemCategories();
 
@@ -46,12 +36,7 @@ export default async function Home() {
 
       <br />
 
-      {items.map(cls => (
-        <div>
-          <Label key={cls.id}>Name: ({cls.name}), Description: ({cls.description}), Category: ({cls.categoryId})</Label>
-          <br />
-        </div>
-      ))}
+      <ItemList itemCategories={itemCategories}/>
 
       <br />
 
