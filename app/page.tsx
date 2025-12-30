@@ -10,6 +10,7 @@ import {
 } from "@/components/ui/select";
 import { AddCategoryDialog } from "@/components/features/categories/add_category_dialog";
 import ItemList from "@/components/features/items/item_list";
+import { AuthButton } from "@/components/supabase/auth-button";
 
 import { addItem } from "./db/actions";
 import { ItemCategory, ItemCategorySchema } from "./model_classes/item_category";
@@ -28,9 +29,11 @@ export default async function Home() {
 
   return (
     <main>
-      <h1>Fluid</h1>
+      <h1>Mind Vault</h1>
 
       <br />
+
+      <AuthButton />
 
       <h1>Items</h1>
 
